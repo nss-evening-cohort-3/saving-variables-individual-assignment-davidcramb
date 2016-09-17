@@ -54,8 +54,7 @@ namespace SavingVariables
                 Console.WriteLine("Invalid format, try again. For example: 10 + 5 or 700 / 7");
                 Console.WriteLine(e.Message);
             }
-
-}
+        }
 
 
         public void findOperand()

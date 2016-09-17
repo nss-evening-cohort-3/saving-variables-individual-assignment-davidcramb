@@ -7,13 +7,16 @@ using System.Threading.Tasks;
 
 namespace SavingVariables.Models
 {
-    public class Variables
+    public class Variables : 
     {
         [Key]
-        public int VariableId { get; set; }
+        public virtual int VariableId { get; set; }
         [Required]
-        public char Variable { get; set; }
+        public virtual char Variable { get; set; }
         [Required]
-        public int Value { get; set; }
+        public virtual int Value { get; set; }
     }
 }
+
+
+

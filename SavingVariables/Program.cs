@@ -11,7 +11,6 @@ namespace SavingVariables
         static void Main(string[] args)
         {
             bool keepGoing = true;
-            int counter = 0;
             string constPat = @"(?<variable>[a-z])\s=\s(?<integer>[0-9]+)";
             Regex constCheck = new Regex(constPat, RegexOptions.IgnoreCase);
             string[] quitArray = { "no", "quit", "stop", "exit" };
@@ -24,7 +23,7 @@ namespace SavingVariables
             {
                 var prompt = ">";
                 Console.WriteLine("Add, Subtract, Multiply, Divide, or get a Remainder");
-                Console.Write("[{0}] {1} ", counter, prompt);
+                Console.Write(prompt);
                 string userPrompt = Console.ReadLine().ToLower();
                 Match m = constCheck.Match(userPrompt);
 
@@ -71,7 +70,6 @@ namespace SavingVariables
                         lastExpression.SetLastExpressionQueried(userPrompt);
                         lastExpression.SetLastAnswer(calculation.result);
                         Console.WriteLine(calculation.result);
-                        counter++;
                     }
                     catch (Exception e)
                     {
