@@ -4,10 +4,10 @@ using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Threading.Tasks;
-
+    
 namespace SavingVariables.Models
 {
-    public class Variables : 
+    public class Variables
     {
         [Key]
         public virtual int VariableId { get; set; }
