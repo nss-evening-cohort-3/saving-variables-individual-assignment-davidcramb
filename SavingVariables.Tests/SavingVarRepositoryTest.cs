@@ -13,7 +13,26 @@ namespace SavingVariables.Tests
     public class SavingVarRepositoryTest
     {
         Mock<SavingVarContext> mock_context = new Mock<SavingVarContext>();
+        Mock<DbSet<Variables>> mock_variable_table = new Mock<DbSet<Variables>>();
         List<Variables> variable_list { get; set; }
+        List<Variables> mock_variable_list = new List<Variables>();
+        SavingVarRepository repo { get; set; } //?? What's really going on here?
+
+        public void ConnectMoqToDatastore()
+        {
+            var queryable_list = mock_variable_list.AsQueryable();
+            mock_variable_table.As<IQueryable<Variables>>().Setup(m => m.Provider).Returns(queryable_list.Provider);
+            mock_variable_table.As<IQueryable<Variables>>().Setup(m => m.Expression).Returns(queryable_list.Expression);
+            mock_variable_table.As<IQueryable<Variables>>().Setup(m => m.ElementType).Returns(queryable_list.ElementType);
+            mock_variable_table.As<IQueryable<Variables>>().Setup(m => m.GetEnumerator()).Returns(queryable_list.GetEnumerator);
+            mock_context.Setup(c => c.Variables).Returns(mock_variable_table.Object);
+        }
+        [TestInitialize]
+        public void Initialize()
+        {
+            ConnectMoqToDatastore();
+            repo = new SavingVarRepository(mock_context.Object);
+        }
 
         [TestMethod]
         public void EnsureCanCreateInstanceOfSavingVar()
@@ -24,42 +43,38 @@ namespace SavingVariables.Tests
         [TestMethod]
         public void EnsureCanCreateInstanceofSavingVarWithMoq()
         {
-            SavingVarRepository repo = new SavingVarRepository(mock_context.Object);
             Assert.IsNotNull(repo);
         }
         [TestMethod]
         public void EnsureRepoHasContext()
         {
-            SavingVarRepository repo = new SavingVarRepository();
             SavingVarContext actual_context = repo.Context;
             Assert.IsInstanceOfType(actual_context, typeof(SavingVarContext));
         }
-        [TestMethod]
-        public void EnsureNoVariablesInDatabase()
-        {
-            SavingVarRepository var_repo = new SavingVarRepository();
-            List<Variables> actual_variables = var_repo.GetVariables();
-            int expected_variables = 0;
-            int actual_variable_count = actual_variables.Count();
-            Assert.AreEqual(expected_variables, actual_variable_count);
-        }
+        //[TestMethod]
+        //public void EnsureNoVariablesInDatabase()
+        //{
+        //    SavingVarRepository var_repo = new SavingVarRepository();
+        //    List<Variables> actual_variables = var_repo.GetVariables();
+        //    int expected_variables = 0;
+        //    int actual_variable_count = actual_variables.Count();
+        //    Assert.AreEqual(expected_variables, actual_variable_count);
+        //}
         [TestMethod]
         public void EnsureNoVariablesInDBWithMoq()
         {
-            Mock<DbSet<Variables>> mock_variable_table = new Mock<DbSet<Variables>>();
-            List<Variables> mock_variable_list = new List<Variables>();
-            var queryable_list = mock_variable_list.AsQueryable();
-            mock_variable_table.As<IQueryable<Variables>>().Setup(m => m.Provider).Returns(queryable_list.Provider);
-            mock_variable_table.As<IQueryable<Variables>>().Setup(m => m.Expression).Returns(queryable_list.Expression);
-            mock_variable_table.As<IQueryable<Variables>>().Setup(m => m.ElementType).Returns(queryable_list.ElementType);
-            mock_variable_table.As<IQueryable<Variables>>().Setup(m => m.GetEnumerator()).Returns(queryable_list.GetEnumerator);
-            mock_context.Setup(c => c.Variables).Returns(mock_variable_table.Object);
-
-            SavingVarRepository repo = new SavingVarRepository(mock_context.Object);
             List<Variables> actual_variables = repo.GetVariables();
             int expected_variable_count = 0;
             int actual_variable_count = actual_variables.Count();
             Assert.AreEqual(expected_variable_count, actual_variable_count);
         }
+        [TestMethod]
+        public void EnsureCanAddVariablestoDatabase()
+        {
+
+        }
+        //Add variable to database
+        //delete variable from database
+        
     }
 }
