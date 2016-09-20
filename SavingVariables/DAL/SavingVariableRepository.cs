@@ -10,9 +10,15 @@ namespace SavingVariables.DAL
     public class SavingVarRepository
     {
         public SavingVarContext Context { get; set; }
+        
+
         public SavingVarRepository()
         {
             Context = new SavingVarContext();
+        }
+        public SavingVarRepository(SavingVarContext _context)
+        {
+            Context = _context;
         }
 
         public List<Variables> GetVariables()
