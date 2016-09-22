@@ -29,6 +29,8 @@ namespace SavingVariables.Tests
 
             mock_variable_table.Setup(v => v.Add(It.IsAny<Variables>())).Callback((Variables x) => mock_variable_list.Add(x));
             mock_variable_table.Setup(v => v.Remove(It.IsAny<Variables>())).Callback((Variables x) => mock_variable_list.Remove(x));
+            mock_variable_table.Setup(v => v.Remove(It.IsAny<Variables>())).Callback((Variables x) => mock_variable_list.Remove(x));
+
 
         }
         [TestInitialize]
@@ -84,6 +86,7 @@ namespace SavingVariables.Tests
             int expected_count = 4;
             int actual_count = repo.GetVariables().Count();
             Assert.AreEqual(expected_count, actual_count);
+            mock_variable_table.Verify(x => x.Add(new_variable), Times.Once);
         }
         [TestMethod]
         public void EnsureCanFindVariableByCharacter()
@@ -95,15 +98,48 @@ namespace SavingVariables.Tests
             Assert.AreEqual(expected_character, actual_character);
         }
         [TestMethod]
+        public void EnsureCanFindVariableByValue()
+        {
+            int value_to_find = 3; //initialized z = 3
+            Variables actual_value_result = repo.FindVariableByValue(value_to_find);
+            int actual_value = actual_value_result.Value;
+            int expected_value = 3;
+            Assert.AreEqual(expected_value, actual_value);
+        }
+        [TestMethod]
         //delete variable from database
         public void EnsureCanRemoveVariableFromDatabase()
         {
-
             char variable_to_remove = 'y';
             repo.RemoveVariable(variable_to_remove);
             int expected_variable_count = 2;
             int actual_variable_count = repo.GetVariables().Count();
             Assert.AreEqual(expected_variable_count, actual_variable_count);
+        }
+        [TestMethod]
+        public void EnsureNoExceptionIfReturnResultIsNullForNoVariable()
+        {
+            char variable_to_remove = 'a';
+            Variables result = repo.RemoveVariable(variable_to_remove);
+            Assert.IsNull(result);
+        }
+        [TestMethod]
+        public void EnsureNoExceptionIfReturnResultIsNullForNoValue()
+        {
+            int value_to_remove = 55;
+            Variables result = repo.FindVariableByValue(value_to_remove);
+            Assert.IsNull(result);
+        }
+        [TestMethod]
+        public void EnsureCanSaveQueryResultToDictionary()
+        {
+            //for invoking SHOW ALL command
+        }
+        [TestMethod]
+        public void EnsureCanRemoveAllDataFromTable()
+        {
+            repo.RemoveAllVariablesFromDatabase(repo.Context.Variables);
+            Assert.IsNull(repo.Context.Variables);
         }
     }
 }
