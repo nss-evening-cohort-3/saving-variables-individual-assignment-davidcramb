@@ -14,7 +14,7 @@ namespace SavingVariables.Tests
     {
         Mock<SavingVarContext> mock_context = new Mock<SavingVarContext>();
         Mock<DbSet<Variables>> mock_variable_table = new Mock<DbSet<Variables>>();
-        List<Variables> variable_list { get; set; }
+        //List<Variables> variable_list { get; set; }
         List<Variables> mock_variable_list = new List<Variables>();
         SavingVarRepository repo { get; set; } //?? What's really going on here?
 
@@ -26,12 +26,19 @@ namespace SavingVariables.Tests
             mock_variable_table.As<IQueryable<Variables>>().Setup(m => m.ElementType).Returns(queryable_list.ElementType);
             mock_variable_table.As<IQueryable<Variables>>().Setup(m => m.GetEnumerator()).Returns(queryable_list.GetEnumerator);
             mock_context.Setup(c => c.Variables).Returns(mock_variable_table.Object);
+
+            mock_variable_table.Setup(v => v.Add(It.IsAny<Variables>())).Callback((Variables x) => mock_variable_list.Add(x));
+            mock_variable_table.Setup(v => v.Remove(It.IsAny<Variables>())).Callback((Variables x) => mock_variable_list.Remove(x));
+
         }
         [TestInitialize]
         public void Initialize()
         {
             ConnectMoqToDatastore();
             repo = new SavingVarRepository(mock_context.Object);
+            repo.AddVariable(new Variables { Variable = 'x', Value = 1 });
+            repo.AddVariable(new Variables { Variable = 'y', Value = 2 });
+            repo.AddVariable(new Variables { Variable = 'z', Value = 3 });
         }
 
         [TestMethod]
@@ -63,7 +70,8 @@ namespace SavingVariables.Tests
         [TestMethod]
         public void EnsureNoVariablesInDBWithMoq()
         {
-            List<Variables> actual_variables = repo.GetVariables();
+            SavingVarRepository no_variables = new SavingVarRepository();
+            List<Variables> actual_variables = no_variables.GetVariables();
             int expected_variable_count = 0;
             int actual_variable_count = actual_variables.Count();
             Assert.AreEqual(expected_variable_count, actual_variable_count);
@@ -71,10 +79,31 @@ namespace SavingVariables.Tests
         [TestMethod]
         public void EnsureCanAddVariablestoDatabase()
         {
-
+            Variables new_variable = new Variables { Variable = 'x', Value = 3 };
+            repo.AddVariable(new_variable);
+            int expected_count = 4;
+            int actual_count = repo.GetVariables().Count();
+            Assert.AreEqual(expected_count, actual_count);
         }
-        //Add variable to database
+        [TestMethod]
+        public void EnsureCanFindVariableByCharacter()
+        {
+            char character_to_find = 'y';
+            Variables actual_character_result = repo.FindVariableByCharacter(character_to_find);
+            char actual_character = actual_character_result.Variable;
+            char expected_character = 'y';
+            Assert.AreEqual(expected_character, actual_character);
+        }
+        [TestMethod]
         //delete variable from database
-        
+        public void EnsureCanRemoveVariableFromDatabase()
+        {
+
+            char variable_to_remove = 'y';
+            repo.RemoveVariable(variable_to_remove);
+            int expected_variable_count = 2;
+            int actual_variable_count = repo.GetVariables().Count();
+            Assert.AreEqual(expected_variable_count, actual_variable_count);
+        }
     }
 }
