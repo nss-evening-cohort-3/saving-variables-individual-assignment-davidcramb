@@ -142,18 +142,5 @@ namespace SavingVariables.Tests
             int actual_count = repo.Context.Variables.Count();
             Assert.IsTrue(actual_count == 0);
         }
-
-
-        [TestMethod]
-        public void EnsureDataReallyIsRemovedAfterDeleteMethodIsInvoked()
-        {
-            repo.RemoveAllVariablesFromDatabase(repo.Context.Variables);
-            char checking_variable = 'x';
-            Variables result = repo.FindVariableByCharacter(checking_variable);
-            char actual_result = result.Variable;
-            Console.WriteLine(actual_result);
-
-
-        }
     }
 }
