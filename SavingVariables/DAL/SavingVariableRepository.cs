@@ -64,11 +64,21 @@ namespace SavingVariables.DAL
             return Value_Query.FirstOrDefault();
         }
 
-        public void RemoveAllVariablesFromDatabase(DbSet<Variables> variables)
+        public Variables RemoveAllVariablesFromDatabase(DbSet<Variables> variables)
         {
             Console.Beep(800, 2);
-            Context.Variables.RemoveRange(variables);
+            //Context.Database.ExecuteSqlCommand("delete from variables");
+            IQueryable<Variables> Query_All =
+                from data in Context.Variables
+                select data;
+            List<Variables> Query = Query_All.ToList();
+            foreach (var data in Query)
+            {
+                Context.Variables.Remove(data);
+            }
             Context.SaveChanges();
+            return null;
         }
+
     }
 }

@@ -17,6 +17,7 @@ namespace SavingVariables.Tests
         //List<Variables> variable_list { get; set; }
         List<Variables> mock_variable_list = new List<Variables>();
         SavingVarRepository repo { get; set; } //?? What's really going on here?
+        
 
         public void ConnectMoqToDatastore()
         {
@@ -28,7 +29,6 @@ namespace SavingVariables.Tests
             mock_context.Setup(c => c.Variables).Returns(mock_variable_table.Object);
 
             mock_variable_table.Setup(v => v.Add(It.IsAny<Variables>())).Callback((Variables x) => mock_variable_list.Add(x));
-            mock_variable_table.Setup(v => v.Remove(It.IsAny<Variables>())).Callback((Variables x) => mock_variable_list.Remove(x));
             mock_variable_table.Setup(v => v.Remove(It.IsAny<Variables>())).Callback((Variables x) => mock_variable_list.Remove(x));
 
 
@@ -139,7 +139,21 @@ namespace SavingVariables.Tests
         public void EnsureCanRemoveAllDataFromTable()
         {
             repo.RemoveAllVariablesFromDatabase(repo.Context.Variables);
-            Assert.IsNull(repo.Context.Variables);
+            int actual_count = repo.Context.Variables.Count();
+            Assert.IsTrue(actual_count == 0);
+        }
+
+
+        [TestMethod]
+        public void EnsureDataReallyIsRemovedAfterDeleteMethodIsInvoked()
+        {
+            repo.RemoveAllVariablesFromDatabase(repo.Context.Variables);
+            char checking_variable = 'x';
+            Variables result = repo.FindVariableByCharacter(checking_variable);
+            char actual_result = result.Variable;
+            Console.WriteLine(actual_result);
+
+
         }
     }
 }
