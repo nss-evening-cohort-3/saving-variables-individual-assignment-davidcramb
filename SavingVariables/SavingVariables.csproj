@@ -68,6 +68,14 @@
     <Compile Include="Migrations\201609180312315_InitialCreate.Designer.cs">
       <DependentUpon>201609180312315_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609241700496_InitialCreate5.cs" />
+    <Compile Include="Migrations\201609241700496_InitialCreate5.Designer.cs">
+      <DependentUpon>201609241700496_InitialCreate5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609241701175_InitialCreate10.cs" />
+    <Compile Include="Migrations\201609241701175_InitialCreate10.Designer.cs">
+      <DependentUpon>201609241701175_InitialCreate10.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\UserControl1.cs">
       <SubType>UserControl</SubType>
@@ -98,6 +106,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201609180312315_InitialCreate.resx">
       <DependentUpon>201609180312315_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609241700496_InitialCreate5.resx">
+      <DependentUpon>201609241700496_InitialCreate5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609241701175_InitialCreate10.resx">
+      <DependentUpon>201609241701175_InitialCreate10.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Models\UserControl1.resx">
       <DependentUpon>UserControl1.cs</DependentUpon>

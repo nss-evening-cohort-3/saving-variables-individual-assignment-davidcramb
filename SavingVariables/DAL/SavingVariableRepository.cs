@@ -38,7 +38,7 @@ namespace SavingVariables.DAL
             //List<Variables> found_characters = Context.Variables.ToList();
             IQueryable<Variables> Variable_Query =
                 from data in Context.Variables
-                where data.Variable == character_to_find
+                where data.Variable == character_to_find.ToString()
                 select data;
             return Variable_Query.FirstOrDefault();
             //foreach (Variables variable in Variable_Query)
@@ -80,24 +80,24 @@ namespace SavingVariables.DAL
             return null;
         }
 
-        public void WriteDictionaryKVPToConsole(Dictionary<char,int> Dictionary)
+        public void WriteDictionaryKVPToConsole(Dictionary<string,int> Dictionary)
         {
             if (Dictionary != null)
             {
-                foreach (KeyValuePair<char,int> entry in Dictionary)
+                foreach (KeyValuePair<string,int> entry in Dictionary)
                     Console.WriteLine(entry);
             }
             else Console.WriteLine("Database is empty");
         }
 
-        public Dictionary<char, int> CreateDictionaryOfVariablesAndValues()
+        public Dictionary<string, int> CreateDictionaryOfVariablesAndValues()
         {
 
             IQueryable<Variables> Query_All =
                 from data in Context.Variables
                 select data;
             //List<Variables> Query = Query_All.ToList();
-            Dictionary<char, int> Query_Dictionary = new Dictionary<char, int>();
+            Dictionary<string, int> Query_Dictionary = new Dictionary<string, int>();
             foreach (var data in Query_All)
             {
                 Query_Dictionary.Add(data.Variable, data.Value);

@@ -12,7 +12,7 @@ namespace SavingVariables.Models
         [Key]
         public virtual int VariableId { get; set; }
         [Required]
-        public virtual char Variable { get; set; }
+        public virtual string Variable { get; set; }
         [Required]
         public virtual int Value { get; set; }
     }

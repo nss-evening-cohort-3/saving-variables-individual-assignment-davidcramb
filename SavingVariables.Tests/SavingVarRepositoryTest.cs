@@ -138,11 +138,11 @@ namespace SavingVariables.Tests
         [TestMethod]
         public void EnsureCanSaveQueryResultToDictionary()
         {
-            Dictionary<char, int> expected_dictionary = new Dictionary<char, int>();
+            Dictionary<string, int> expected_dictionary = new Dictionary<string, int>();
             expected_dictionary.Add('x', 1);
             expected_dictionary.Add('y', 2);
             expected_dictionary.Add('z', 3);
-            Dictionary<char, int> actual_dictionary = repo.CreateDictionaryOfVariablesAndValues();
+            Dictionary<string, int> actual_dictionary = repo.CreateDictionaryOfVariablesAndValues();
             CollectionAssert.AreEquivalent(expected_dictionary, actual_dictionary);
               
         }
