@@ -14,14 +14,16 @@ namespace SavingVariables
             string constPat = @"(?<variable>[a-z])\s=\s(?<integer>[0-9]+)";
             Regex constCheck = new Regex(constPat, RegexOptions.IgnoreCase);
             string[] quitArray = { "no", "quit", "stop", "exit" };
+            string[] deleteArray = { "clear", "remove", "delete" };
             Stack lastExpression = new Stack();
             Expression userExpression = new Expression();
+            DAL.SavingVarRepository Repo = new DAL.SavingVarRepository();
 
             Console.WriteLine("This is a Calculator. There are many like it but this one is mine.");
 
             while (keepGoing)
             {
-                var prompt = ">";
+                var prompt = ">>";
                 Console.WriteLine("Add, Subtract, Multiply, Divide, or get a Remainder");
                 Console.Write(prompt);
                 string userPrompt = Console.ReadLine().ToLower();
@@ -30,7 +32,7 @@ namespace SavingVariables
                 if (quitArray.Any(userPrompt.Contains))
                 {
                     keepGoing = false;
-                    Console.WriteLine("Bye!");
+                    Console.WriteLine("Bye! Thanks for calculating with me today.");
                     Console.ReadLine();
                 }
                 else if (userPrompt == "last")
@@ -46,7 +48,6 @@ namespace SavingVariables
                 }
                 else if (userPrompt == "lastq")
                 {
-
                     try
                     {
                         lastExpression.GetLastExpressionQueried();
@@ -55,10 +56,21 @@ namespace SavingVariables
                     {
                         Console.WriteLine(e.Message);
                     }
+                } else if (deleteArray.Any(userPrompt.Contains))
+                {
+                    Repo.RemoveAllVariablesFromDatabase(Repo.Context.Variables);
+                    Console.WriteLine("All variables have been removed from the database. I hope you're proud of yourself.");
+                } else if (userPrompt == "show all")
+                {
+                    Repo.CreateDictionaryOfVariablesAndValues();
+                    Repo.WriteDictionaryKVPToConsole(Repo.CreateDictionaryOfVariablesAndValues());
                 }
+
                 else if (m.Success)
                 {
                     userExpression.CreateVariable(m.Groups[1].ToString(), m.Groups[2].ToString());
+                    Models.Variables new_variable = new Models.Variables { Variable = lastExpression.VariableLetter, Value = lastExpression.VariableValue };
+                    Repo.AddVariable(new_variable);
                 }
                 else
                 {

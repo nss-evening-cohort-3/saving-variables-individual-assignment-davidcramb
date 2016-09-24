@@ -42,6 +42,11 @@ namespace SavingVariables.Tests
             repo.AddVariable(new Variables { Variable = 'y', Value = 2 });
             repo.AddVariable(new Variables { Variable = 'z', Value = 3 });
         }
+        [TestCleanup]
+        public void CleanRepo()
+        {
+            repo = null;
+        }
 
         [TestMethod]
         public void EnsureCanCreateInstanceOfSavingVar()

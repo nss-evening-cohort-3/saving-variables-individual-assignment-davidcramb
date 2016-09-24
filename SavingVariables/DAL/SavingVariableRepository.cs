@@ -80,6 +80,16 @@ namespace SavingVariables.DAL
             return null;
         }
 
+        public void WriteDictionaryKVPToConsole(Dictionary<char,int> Dictionary)
+        {
+            if (Dictionary != null)
+            {
+                foreach (var character in Dictionary)
+                    Console.WriteLine(character);
+            }
+            else Console.WriteLine("Database is empty");
+        }
+
         public Dictionary<char, int> CreateDictionaryOfVariablesAndValues()
         {
 
