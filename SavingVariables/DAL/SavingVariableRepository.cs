@@ -67,7 +67,7 @@ namespace SavingVariables.DAL
         public Variables RemoveAllVariablesFromDatabase(DbSet<Variables> variables)
         {
             Console.Beep(800, 2);
-            //Context.Database.ExecuteSqlCommand("delete from variables");
+            //Context.Database.ExecuteSqlCommand("delete from variables"); guess this doesn't work.
             IQueryable<Variables> Query_All =
                 from data in Context.Variables
                 select data;
@@ -80,5 +80,19 @@ namespace SavingVariables.DAL
             return null;
         }
 
+        public Dictionary<char, int> CreateDictionaryOfVariablesAndValues()
+        {
+
+            IQueryable<Variables> Query_All =
+                from data in Context.Variables
+                select data;
+            //List<Variables> Query = Query_All.ToList();
+            Dictionary<char, int> Query_Dictionary = new Dictionary<char, int>();
+            foreach (var data in Query_All)
+            {
+                Query_Dictionary.Add(data.Variable, data.Value);
+            }
+            return Query_Dictionary;
+        }
     }
 }

@@ -133,7 +133,13 @@ namespace SavingVariables.Tests
         [TestMethod]
         public void EnsureCanSaveQueryResultToDictionary()
         {
-            //for invoking SHOW ALL command
+            Dictionary<char, int> expected_dictionary = new Dictionary<char, int>();
+            expected_dictionary.Add('x', 1);
+            expected_dictionary.Add('y', 2);
+            expected_dictionary.Add('z', 3);
+            Dictionary<char, int> actual_dictionary = repo.CreateDictionaryOfVariablesAndValues();
+            CollectionAssert.AreEquivalent(expected_dictionary, actual_dictionary);
+              
         }
         [TestMethod]
         public void EnsureCanRemoveAllDataFromTable()
