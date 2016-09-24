@@ -84,8 +84,8 @@ namespace SavingVariables.DAL
         {
             if (Dictionary != null)
             {
-                foreach (var character in Dictionary)
-                    Console.WriteLine(character);
+                foreach (KeyValuePair<char,int> entry in Dictionary)
+                    Console.WriteLine(entry);
             }
             else Console.WriteLine("Database is empty");
         }
@@ -103,6 +103,10 @@ namespace SavingVariables.DAL
                 Query_Dictionary.Add(data.Variable, data.Value);
             }
             return Query_Dictionary;
+        }
+
+        public void CreateCustomResultTableofVariables()
+        {
         }
     }
 }

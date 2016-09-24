@@ -16,6 +16,7 @@ namespace SavingVariables.Models
         [Required]
         public virtual int Value { get; set; }
     }
+    
 }
 
 

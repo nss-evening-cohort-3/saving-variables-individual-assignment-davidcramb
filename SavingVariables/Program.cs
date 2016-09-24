@@ -69,7 +69,7 @@ namespace SavingVariables
                 else if (m.Success)
                 {
                     userExpression.CreateVariable(m.Groups[1].ToString(), m.Groups[2].ToString());
-                    Models.Variables new_variable = new Models.Variables { Variable = lastExpression.VariableLetter, Value = lastExpression.VariableValue };
+                    Models.Variables new_variable = new Models.Variables { Variable = char.Parse(m.Groups[1].ToString()), Value = int.Parse(m.Groups[2].ToString()) };
                     Repo.AddVariable(new_variable);
                 }
                 else
