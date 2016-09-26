@@ -38,9 +38,9 @@ namespace SavingVariables.Tests
         {
             ConnectMoqToDatastore();
             repo = new SavingVarRepository(mock_context.Object);
-            repo.AddVariable(new Variables { Variable = 'x', Value = 1 });
-            repo.AddVariable(new Variables { Variable = 'y', Value = 2 });
-            repo.AddVariable(new Variables { Variable = 'z', Value = 3 });
+            repo.AddVariable(new Variables { Variable = "x", Value = 1 });
+            repo.AddVariable(new Variables { Variable = "y", Value = 2 });
+            repo.AddVariable(new Variables { Variable = "z", Value = 3 });
         }
         [TestCleanup]
         public void CleanRepo()
@@ -86,7 +86,7 @@ namespace SavingVariables.Tests
         [TestMethod]
         public void EnsureCanAddVariablestoDatabase()
         {
-            Variables new_variable = new Variables { Variable = 'x', Value = 3 };
+            Variables new_variable = new Variables { Variable = "x", Value = 3 };
             repo.AddVariable(new_variable);
             int expected_count = 4;
             int actual_count = repo.GetVariables().Count();
@@ -96,10 +96,10 @@ namespace SavingVariables.Tests
         [TestMethod]
         public void EnsureCanFindVariableByCharacter()
         {
-            char character_to_find = 'y';
+            string character_to_find = "y";
             Variables actual_character_result = repo.FindVariableByCharacter(character_to_find);
-            char actual_character = actual_character_result.Variable;
-            char expected_character = 'y';
+            string actual_character = actual_character_result.Variable;
+            string expected_character = "y";
             Assert.AreEqual(expected_character, actual_character);
         }
         [TestMethod]
@@ -115,7 +115,7 @@ namespace SavingVariables.Tests
         //delete variable from database
         public void EnsureCanRemoveVariableFromDatabase()
         {
-            char variable_to_remove = 'y';
+            string variable_to_remove = "y";
             repo.RemoveVariable(variable_to_remove);
             int expected_variable_count = 2;
             int actual_variable_count = repo.GetVariables().Count();
@@ -124,7 +124,7 @@ namespace SavingVariables.Tests
         [TestMethod]
         public void EnsureNoExceptionIfReturnResultIsNullForNoVariable()
         {
-            char variable_to_remove = 'a';
+            string variable_to_remove = "a";
             Variables result = repo.RemoveVariable(variable_to_remove);
             Assert.IsNull(result);
         }
@@ -139,9 +139,9 @@ namespace SavingVariables.Tests
         public void EnsureCanSaveQueryResultToDictionary()
         {
             Dictionary<string, int> expected_dictionary = new Dictionary<string, int>();
-            expected_dictionary.Add('x', 1);
-            expected_dictionary.Add('y', 2);
-            expected_dictionary.Add('z', 3);
+            expected_dictionary.Add("x", 1);
+            expected_dictionary.Add("y", 2);
+            expected_dictionary.Add("z", 3);
             Dictionary<string, int> actual_dictionary = repo.CreateDictionaryOfVariablesAndValues();
             CollectionAssert.AreEquivalent(expected_dictionary, actual_dictionary);
               
@@ -153,5 +153,10 @@ namespace SavingVariables.Tests
             int actual_count = repo.Context.Variables.Count();
             Assert.IsTrue(actual_count == 0);
         }
+        //[TestMethod]
+        //public void EnsureExceptionIfSameVariableAddedToDatabaseTwice()
+        //{
+        //    repo.AddVariable            
+        //}
     }
 }

@@ -33,7 +33,7 @@ namespace SavingVariables.DAL
             Context.SaveChanges();
         }
 
-        public Variables FindVariableByCharacter(char character_to_find)
+        public Variables FindVariableByCharacter(string character_to_find)
         {
             //List<Variables> found_characters = Context.Variables.ToList();
             IQueryable<Variables> Variable_Query =
@@ -47,7 +47,7 @@ namespace SavingVariables.DAL
             //}
         }
 
-        public Variables RemoveVariable(char variable_character)
+        public Variables RemoveVariable(string variable_character)
         {
             Variables character_to_remove = FindVariableByCharacter(variable_character);
             Context.Variables.Remove(character_to_remove);
@@ -83,26 +83,42 @@ namespace SavingVariables.DAL
         public void WriteDictionaryKVPToConsole(Dictionary<string,int> Dictionary)
         {
             if (Dictionary != null)
+
             {
+                Console.WriteLine(@"
+                     ______________
+| Name | Value |
+----------------".Trim());
                 foreach (KeyValuePair<string,int> entry in Dictionary)
-                    Console.WriteLine(entry);
+                    Console.WriteLine("| " + entry.Key + " | " + entry.Value + " |");
+                Console.WriteLine("______________");
             }
+
             else Console.WriteLine("Database is empty");
         }
 
         public Dictionary<string, int> CreateDictionaryOfVariablesAndValues()
         {
-
-            IQueryable<Variables> Query_All =
-                from data in Context.Variables
-                select data;
-            //List<Variables> Query = Query_All.ToList();
-            Dictionary<string, int> Query_Dictionary = new Dictionary<string, int>();
-            foreach (var data in Query_All)
+            try
             {
-                Query_Dictionary.Add(data.Variable, data.Value);
+                IQueryable<Variables> Query_All =
+                    from data in Context.Variables
+                    select data;
+                //List<Variables> Query = Query_All.ToList();
+                Dictionary<string, int> Query_Dictionary = new Dictionary<string, int>();
+                foreach (var data in Query_All)
+                {
+                    Query_Dictionary.Add(data.Variable, data.Value);
+                }
+                return Query_Dictionary;
             }
-            return Query_Dictionary;
+            catch (ArgumentException e)
+            {
+                Console.WriteLine("Oh, dear.");
+                Console.WriteLine(e);
+                return null;
+            }
+
         }
 
         public void CreateCustomResultTableofVariables()

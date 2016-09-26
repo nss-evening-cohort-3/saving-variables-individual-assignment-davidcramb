@@ -12,9 +12,8 @@ namespace SavingVariables
         {
             bool keepGoing = true;
             string constPat = @"(?<variable>[a-z])\s=\s(?<integer>[0-9]+)";
+            UserCommands command = new UserCommands();
             Regex constCheck = new Regex(constPat, RegexOptions.IgnoreCase);
-            string[] quitArray = { "no", "quit", "stop", "exit" };
-            string[] deleteArray = { "clear", "remove", "delete" };
             Stack lastExpression = new Stack();
             Expression userExpression = new Expression();
             DAL.SavingVarRepository Repo = new DAL.SavingVarRepository();
@@ -23,19 +22,18 @@ namespace SavingVariables
 
             while (keepGoing)
             {
-                var prompt = ">>";
                 Console.WriteLine("Add, Subtract, Multiply, Divide, or get a Remainder");
-                Console.Write(prompt);
+                Console.Write(command.prompt);
                 string userPrompt = Console.ReadLine().ToLower();
                 Match m = constCheck.Match(userPrompt);
 
-                if (quitArray.Any(userPrompt.Contains))
+                if (command.quitArray.Any(userPrompt.Contains))
                 {
                     keepGoing = false;
                     Console.WriteLine("Bye! Thanks for calculating with me today.");
                     Console.ReadLine();
                 }
-                else if (userPrompt == "last")
+                else if (userPrompt == command.last)
                 {
                     try
                     {
@@ -46,7 +44,7 @@ namespace SavingVariables
                         Console.WriteLine(e.Message);
                     }
                 }
-                else if (userPrompt == "lastq")
+                else if (userPrompt == command.lastq)
                 {
                     try
                     {
@@ -56,11 +54,11 @@ namespace SavingVariables
                     {
                         Console.WriteLine(e.Message);
                     }
-                } else if (deleteArray.Any(userPrompt.Contains))
+                } else if (command.deleteArray.Any(userPrompt.Contains))
                 {
                     Repo.RemoveAllVariablesFromDatabase(Repo.Context.Variables);
                     Console.WriteLine("All variables have been removed from the database. I hope you're proud of yourself.");
-                } else if (userPrompt == "show all")
+                } else if (command.showall.Any(userPrompt.Contains))
                 {
                     Repo.CreateDictionaryOfVariablesAndValues();
                     Repo.WriteDictionaryKVPToConsole(Repo.CreateDictionaryOfVariablesAndValues());

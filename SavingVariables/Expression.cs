@@ -10,9 +10,10 @@ namespace SavingVariables
     {
         public Expression()
         {
-             Constant.userVars = new Dictionary<char, int>();
+            Constant.userVars = new Dictionary<string, int>();
         }
         public Stack Constant = new Stack();
+        public DAL.SavingVarRepository repo = new DAL.SavingVarRepository();
         public char[] validOperand = { '+','-','%','/','*'};
         public char[] digits = { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
         public string expression_as_string { get; set; }
@@ -35,11 +36,11 @@ namespace SavingVariables
                 if (!Int32.TryParse(expression_array[0], out x))
                 {
                 
-                    x = Constant.userVars[Convert.ToChar(expression_array[0])];
+                    x = Constant.userVars[(expression_array[0])];
                 }
                 if (!Int32.TryParse(expression_array[1], out y))
                 {
-                    y = Constant.userVars[Convert.ToChar(expression_array[1])];
+                    y = Constant.userVars[(expression_array[1])];
                 }
                 LHS = x;
                 RHS = y;
@@ -78,7 +79,8 @@ namespace SavingVariables
         }
         public void CreateVariable(string variable, string value)
         {
-            char x = char.Parse(variable);
+            
+            string x = variable;
             int y = int.Parse(value);
             Constant.SetUserVariableToThisValue(x, y);
         }

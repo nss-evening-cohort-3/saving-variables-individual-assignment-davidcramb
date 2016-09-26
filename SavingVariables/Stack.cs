@@ -15,12 +15,12 @@ namespace SavingVariables
         public Stack<int> last_answer { get; set; }
         public Stack<string> last_expression { get; set; }
         //public Dictionary<int, UserValue> varDictionary { get; set; }
-        public char VariableLetter {get; set; }
+        public string VariableLetter {get; set; }
         public int VariableValue { get; set; }
-        public Dictionary<char, int> userVars { get; set; }
+        public Dictionary<string, int> userVars { get; set; }
 
         
-        public void SetUserVariableToThisValue(char variable, int value)
+        public void SetUserVariableToThisValue(string variable, int value)
         {
             if (userVars.ContainsKey(variable))
             {
