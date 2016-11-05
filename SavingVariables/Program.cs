@@ -57,6 +57,7 @@ namespace SavingVariables
                 } else if (command.deleteArray.Any(userPrompt.Contains))
                 {
                     Repo.RemoveAllVariablesFromDatabase(Repo.Context.Variables);
+                    userExpression.RemoveAllVariables();
                     Console.WriteLine("All variables have been removed from the database. I hope you're proud of yourself.");
                 } else if (command.showall.Any(userPrompt.Contains))
                 {

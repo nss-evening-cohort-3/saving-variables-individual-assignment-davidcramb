@@ -52,6 +52,9 @@ namespace SavingVariables.Tests
         public void EnsureCanCreateInstanceOfSavingVar()
         {
             SavingVarRepository saved = new SavingVarRepository();
+            double percent = 2.5;
+            Console.WriteLine(percent / 100);
+            
             Assert.IsNotNull(saved);
         }
         [TestMethod]
@@ -65,15 +68,6 @@ namespace SavingVariables.Tests
             SavingVarContext actual_context = repo.Context;
             Assert.IsInstanceOfType(actual_context, typeof(SavingVarContext));
         }
-        //[TestMethod]
-        //public void EnsureNoVariablesInDatabase()
-        //{
-        //    SavingVarRepository var_repo = new SavingVarRepository();
-        //    List<Variables> actual_variables = var_repo.GetVariables();
-        //    int expected_variables = 0;
-        //    int actual_variable_count = actual_variables.Count();
-        //    Assert.AreEqual(expected_variables, actual_variable_count);
-        //}
         [TestMethod]
         public void EnsureNoVariablesInDBWithMoq()
         {
@@ -153,10 +147,15 @@ namespace SavingVariables.Tests
             int actual_count = repo.Context.Variables.Count();
             Assert.IsTrue(actual_count == 0);
         }
-        //[TestMethod]
-        //public void EnsureExceptionIfSameVariableAddedToDatabaseTwice()
-        //{
-        //    repo.AddVariable            
-        //}
+        [TestMethod]
+        public void EnsureCanSetVariableAfterDataCleared()
+        {
+            repo.RemoveAllVariablesFromDatabase(repo.Context.Variables);
+            int actual_count = repo.GetVariables().Count();
+            Assert.IsTrue(actual_count == 0);
+            Variables new_variable = new Variables { Variable = "x", Value = 1 };
+
+
+        }
     }
 }

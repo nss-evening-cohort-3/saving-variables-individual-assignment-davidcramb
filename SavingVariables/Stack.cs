@@ -34,11 +34,10 @@ namespace SavingVariables
                 Console.WriteLine("Set {0} to {1}", VariableLetter, VariableValue);
             }
         }
-        public void AddToDictionary()
+        public void DeleteVariablesFromUserVars()
         {
-
+            userVars.Clear();
         }
-
         public void SetLastAnswer(int result)
         {
             last_answer = new Stack<int>();

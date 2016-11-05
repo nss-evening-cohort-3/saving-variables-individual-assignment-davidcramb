@@ -84,5 +84,9 @@ namespace SavingVariables
             int y = int.Parse(value);
             Constant.SetUserVariableToThisValue(x, y);
         }
+        public void RemoveAllVariables()
+        {
+            Constant.DeleteVariablesFromUserVars();
+        }
     }
 }

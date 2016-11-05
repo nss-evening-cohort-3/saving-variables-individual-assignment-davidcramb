@@ -76,6 +76,7 @@ namespace SavingVariables.DAL
             {
                 Context.Variables.Remove(data);
             }
+
             Context.SaveChanges();
             return null;
         }
